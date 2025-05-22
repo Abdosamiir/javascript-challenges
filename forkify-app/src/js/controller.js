@@ -10,7 +10,7 @@ import paginationView from './views/paginationView.js';
 //   module.hot.accept();
 // }
 
-const showRecipe = async function () {
+const controlRecipe = async function () {
   try {
     const id = window.location.hash.slice(1);
     console.log(id);
@@ -18,6 +18,9 @@ const showRecipe = async function () {
 
     // Render spinner
     recipeView.renderSpinner();
+
+    // Update results view to mark selected search result
+    resultsView.update(model.getSearchResultsPage());
 
     // Loading recipe
     await model.loadRecipe(id);
@@ -62,11 +65,12 @@ const controlServings = function (newServings) {
   model.updateServings(newServings);
 
   // Update the recipe view
-  recipeView.render(model.state.recipe);
+  // recipeView.render(model.state.recipe);
+  recipeView.update(model.state.recipe);
 };
 
 const init = function () {
-  recipeView.addHandlerRender(showRecipe);
+  recipeView.addHandlerRender(controlRecipe);
   recipeView.addHandlerUpdateServings(controlServings);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
