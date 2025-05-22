@@ -12,6 +12,8 @@ const btnNew = document.querySelector('.btn--new');
 const btnRoll = document.querySelector('.btn--roll');
 const btnHold = document.querySelector('.btn--hold');
 
+
+
 // starting condition
 let currentScore, activePlayer, playing, scores;
 const init = function () {
@@ -29,6 +31,9 @@ const init = function () {
 };
 
 init();
+
+
+
 
 const switchPlayer = function () {
   document.getElementById(`current--${activePlayer}`).textContent = 0;
@@ -57,13 +62,14 @@ btnRoll.addEventListener('click', function () {
   }
 });
 
+
 btnHold.addEventListener('click', function () {
   if (playing) {
     scores[activePlayer] += currentScore;
     document.getElementById(`score--${activePlayer}`).textContent =
       scores[activePlayer];
 
-    if (scores[activePlayer] >= 100) {
+    if (scores[activePlayer] >= 20) {
       playing = false;
       diceEl.classList.add('hidden');
 
