@@ -44,10 +44,12 @@ export default class View {
     this._parentEl.insertAdjacentHTML('afterbegin', markup);
   }
 
-  render(data) {
+  render(data, render = true) {
     if (!data || (Array.isArray(data) && data.length === 0))
       return this.renderError();
     this._data = data;
+
+    if (!render) return this._generateMarkup();
     const markup = this._generateMarkup();
     this._clear();
     this._parentEl.insertAdjacentHTML('afterbegin', markup);
