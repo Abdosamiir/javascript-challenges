@@ -1,4 +1,6 @@
-import View from './view';
+// import View from './view';
+
+import View from './View';
 
 class PreviewView extends View {
   _parentEl = '';
