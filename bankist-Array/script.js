@@ -1,9 +1,5 @@
 'use strict';
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// BANKIST APP
-
 // Data
 const account1 = {
   owner: 'Jonas Schmedtmann',
@@ -61,10 +57,6 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// LECTURES
-
 const currencies = new Map([
   ['USD', 'United States dollar'],
   ['EUR', 'Euro'],
@@ -73,4 +65,86 @@ const currencies = new Map([
 
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
-/////////////////////////////////////////////////
+const displayMovements = function (movements) {
+  containerMovements.innerHTML = ''; // Clear existing movements
+
+  movements.forEach(function (mov, i) {
+    const type = mov > 0 ? 'deposit' : 'withdrawal';
+    const html = `
+      <div class="movements__row">
+        <div class="movements__type movements__type--${type}">${
+      i + 1
+    } ${type}</div>
+        <div class="movements__value">${mov}€</div>
+      </div>
+    `;
+    containerMovements.insertAdjacentHTML('afterbegin', html);
+  });
+};
+
+displayMovements(account1.movements);
+
+const clacDisplayBalance = function (movments) {
+  const balance = movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${balance} EUR`;
+};
+
+clacDisplayBalance(account1.movements);
+
+// **challenge 1**
+
+// const juliaData = [3, 5, 2, 12, 7];
+// const kateData = [4, 1, 15, 8, 3];
+
+// const checkDogs = function (dogsJulia, dogsKate) {
+//   const dogsJuliaCorrected = dogsJulia.slice();
+//   dogsJuliaCorrected.splice(0, 1);
+//   dogsJuliaCorrected.splice(-2);
+
+//   const dogs = [...dogsJuliaCorrected, ...dogsKate];
+
+//   dogs.forEach((dog, i) => {
+//     if (dog >= 3) {
+//       console.log(`dog num ${i + 1} is an adult ,and is ${dog} years old`);
+//     } else {
+//       console.log(`dog num ${i + 1} is still puppy  `);
+//     }
+//   });
+// };
+
+// checkDogs(juliaData, kateData);
+
+// const eurToUsd = 1.1;
+
+// // this paradigm is functional programing
+// const movUsd = movements.map(mov => Math.floor(mov * eurToUsd));
+// console.log(movements);
+// console.log(movUsd);
+
+const createUsername = function (accs) {
+  accs.forEach(acc => {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0])
+      .join('');
+  });
+};
+
+createUsername(accounts);
+
+const deposits = movements.filter(mov => mov > 0);
+// console.log(deposits);
+
+const withdrawals = movements.filter(mov => mov < 0);
+// console.log(withdrawals);
+
+const balance = movements.reduce((acc, cur) => acc + cur);
+// console.log(balance);
+
+const max = movements.reduce((acc, mov) => {
+  if (acc > mov) return acc;
+  else return mov;
+}, movements[0]);
+
+console.log(max);

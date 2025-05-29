@@ -16,7 +16,7 @@ html {
 }
 
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   color: #444;
   background-color: #f3f3f3;
   height: 100vh;
@@ -94,8 +94,32 @@ nav {
   gap: 2rem;
 
   /* NOTE This creates the fade in/out anumation */
-  opacity: 0;
+  /* opacity: 0; */
   transition: all 1s;
+}
+@media screen and (max-width: 768px) {
+  .app {
+    grid-template-columns: 1fr;
+  }
+
+  .balance {
+    grid-column: 1;
+  }
+
+  .movements {
+    grid-row: 2;
+  }
+
+  .operation--transfer,
+  .operation--loan,
+  .operation--close {
+    grid-column: 1;
+  }
+  /* .logout-timer {
+    text-align: center;
+    margin-top: 2.5rem;
+    padding: 0 1rem;
+  } */
 }
 
 .balance {
