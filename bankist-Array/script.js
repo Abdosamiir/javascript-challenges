@@ -91,6 +91,30 @@ const clacDisplayBalance = function (movments) {
 
 clacDisplayBalance(account1.movements);
 
+const calcDisplaySummary = function (movements) {
+  const incomes = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumIn.textContent = `${incomes}€`;
+
+  const out = movements
+    .filter(mov => mov < 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumOut.textContent = `${Math.abs(out)}€`;
+
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(deposite => (deposite * 1.2) / 100)
+    .filter((int, i, arr) => {
+      console.log(arr);
+      return int >= 1;
+    })
+    .reduce((acc, int) => acc + int, 0);
+  labelSumInterest.textContent = `${interest}€`;
+};
+
+calcDisplaySummary(account1.movements);
+
 // **challenge 1**
 
 // const juliaData = [3, 5, 2, 12, 7];
@@ -114,8 +138,6 @@ clacDisplayBalance(account1.movements);
 
 // checkDogs(juliaData, kateData);
 
-// const eurToUsd = 1.1;
-
 // // this paradigm is functional programing
 // const movUsd = movements.map(mov => Math.floor(mov * eurToUsd));
 // console.log(movements);
@@ -133,18 +155,38 @@ const createUsername = function (accs) {
 
 createUsername(accounts);
 
-const deposits = movements.filter(mov => mov > 0);
-// console.log(deposits);
+const eurToUsd = 1.1;
+const totalDepositsUSD = movements
+  .filter(mov => mov > 0)
+  .map(mov => mov * eurToUsd)
+  .reduce((acc, mov) => acc + mov, 0);
 
-const withdrawals = movements.filter(mov => mov < 0);
+console.log(totalDepositsUSD);
+
+// const withdrawals = movements.filter(mov => mov < 0);
 // console.log(withdrawals);
 
-const balance = movements.reduce((acc, cur) => acc + cur);
-// console.log(balance);
-
+// return the maximum value in the movements array
 const max = movements.reduce((acc, mov) => {
   if (acc > mov) return acc;
   else return mov;
 }, movements[0]);
 
-console.log(max);
+// console.log(max);
+
+// const isPalindrome = function (str) {
+//   return str === str.split('').reverse().join('');
+// };
+
+// ** challenge 2 **
+// const Data1 = [3, 5, 2, 12, 7];
+// const Data2 = [4, 1, 15, 8, 3];
+
+// const calcAverageHumanAge = function (ages) {
+//   const humanAge = ages.map(age => (age <= 2 ? 2 * age : 16 + age * 2));
+//   const adult = humanAge.filter(age => age >= 18);
+//   const avg = adult.reduce((acc, cur, _, arr) => acc + cur / arr.length, 0);
+//   return console.log(avg);
+// };
+// calcAverageHumanAge(Data1);
+// calcAverageHumanAge(Data2);
