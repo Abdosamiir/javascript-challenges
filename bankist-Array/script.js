@@ -84,12 +84,12 @@ const displayMovements = function (movements) {
 
 // displayMovements(account1.movements);
 
-const clacDisplayBalance = function (movements) {
-  const balance = movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${balance} EUR`;
+const calcDisplayBalance = function (acc) {
+  acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${acc.balance} EUR`;
 };
 
-// clacDisplayBalance(account1.movements);
+// calcDisplayBalance(account1.movements);
 
 const calcDisplaySummary = function (acc) {
   const incomes = acc.movements
@@ -198,6 +198,12 @@ const max = movements.reduce((acc, mov) => {
 // const account = accounts.find(acc => acc.owner === 'Jessica Davis');
 // console.log(account);
 
+const updateUI = function (acc) {
+  displayMovements(acc.movements);
+  calcDisplayBalance(acc);
+  calcDisplaySummary(acc);
+};
+
 let curAcc;
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault();
@@ -210,9 +216,55 @@ btnLogin.addEventListener('click', function (e) {
 
     inputLoginPin.blur();
 
-    displayMovements(curAcc.movements);
-    clacDisplayBalance(curAcc.movements);
-    calcDisplaySummary(curAcc);
+    updateUI(curAcc);
   }
   console.log(curAcc);
 });
+
+btnTransfer.addEventListener('click', e => {
+  e.preventDefault();
+  const amount = Number(inputTransferAmount.value);
+  const reciverAcc = accounts.find(
+    acc => acc.username === inputTransferTo.value
+  );
+  inputTransferAmount.value = inputTransferTo.value = '';
+
+  console.log(amount, reciverAcc);
+  if (
+    amount > 0 &&
+    reciverAcc &&
+    curAcc.balance >= amount &&
+    reciverAcc?.username !== curAcc.username
+  ) {
+    // doing the transfer
+    curAcc.movements.push(-amount);
+    reciverAcc.movements.push(amount);
+    // update the UI
+    updateUI(curAcc);
+  }
+});
+
+btnClose.addEventListener('click', e => {
+  e.preventDefault();
+  if (
+    curAcc.username === inputCloseUsername.value &&
+    curAcc.pin === Number(inputClosePin.value)
+  ) {
+    const index = accounts.findIndex(acc => acc.username === curAcc.username);
+    accounts.splice(index, 1);
+    containerApp.style.opacity = 0;
+  }
+  inputCloseUsername.value = inputClosePin.value = '';
+});
+
+// findLast withdrawal method
+
+const lastWithdrawal = movements.findLast(mov => mov < 0);
+console.log(lastWithdrawal);
+
+// findLastIndex method
+const latestLargeMovIndex = movements.findLastIndex(mov => mov > 1000);
+console.log(latestLargeMovIndex);
+console.log(
+  `your latest large mov was ${movements.length - latestLargeMovIndex} ago`
+);
